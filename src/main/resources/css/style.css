@@ -1,0 +1,23 @@
+.root { -fx-font-family: "Segoe UI", Arial, sans-serif; -fx-background-color: #f5f7fb; -fx-text-fill: #1e293b; }
+.header { -fx-background-color: #ffffff; -fx-border-color: transparent transparent #e5eaf2 transparent; }
+.app-title { -fx-font-size: 21px; -fx-font-weight: 700; -fx-text-fill: #172554; }
+.header-subtitle, .muted-text { -fx-text-fill: #64748b; }
+.sidebar { -fx-background-color: #172554; -fx-pref-width: 215px; }
+.nav-caption { -fx-text-fill: #94a3b8; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 0 8 8 8; }
+.nav-button { -fx-background-color: transparent; -fx-text-fill: #dbeafe; -fx-alignment: CENTER-LEFT; -fx-padding: 11 12; -fx-cursor: hand; }
+.nav-button:hover { -fx-background-color: #263a70; -fx-text-fill: white; }
+.exit-button:hover { -fx-background-color: #7f1d1d; }
+.content { -fx-background-color: #f5f7fb; }
+.page-title { -fx-font-size: 25px; -fx-font-weight: 700; -fx-text-fill: #172554; }
+.section-title { -fx-font-size: 16px; -fx-font-weight: 700; -fx-text-fill: #334155; }
+.stat-card, .activity-panel, .form-panel { -fx-background-color: white; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e2e8f0; -fx-padding: 18; }
+.card-number { -fx-font-size: 27px; -fx-font-weight: 700; -fx-text-fill: #2563eb; }
+.button { -fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 8 13; -fx-font-weight: 600; -fx-cursor: hand; }
+.button:hover { -fx-background-color: #1d4ed8; }
+.danger-button { -fx-background-color: #dc2626; }
+.danger-button:hover { -fx-background-color: #b91c1c; }
+.text-field, .combo-box, .date-picker { -fx-background-radius: 5; -fx-border-color: #cbd5e1; -fx-border-radius: 5; -fx-padding: 7; }
+.table-view { -fx-background-color: white; -fx-border-color: #e2e8f0; -fx-border-radius: 7; -fx-background-radius: 7; }
+.table-view .column-header { -fx-background-color: #eff6ff; -fx-font-weight: 700; }
+.table-row-cell:filled:selected { -fx-background-color: #dbeafe; }
+.quick-actions .button { -fx-padding: 10 16; }
