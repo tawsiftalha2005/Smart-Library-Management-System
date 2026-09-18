@@ -6,7 +6,7 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-A desktop Smart Library Management System developed with **Java 26**, **Maven**, **JavaFX**, and object-oriented programming. The JavaFX dashboard is the primary interface; the original menu-driven console version remains available.
+A native desktop Smart Library Management System developed with **Java 26**, **Maven**, **JavaFX**, and object-oriented programming. The JavaFX application is the primary interface; the original menu-driven console version remains available.
 
 The project focuses on **clean code**, **modular architecture**, and **object-oriented design**, making it an excellent learning project for Java beginners and a strong addition to a software engineering portfolio.
 
@@ -21,6 +21,16 @@ The application is organized into multiple packages following good software desi
 ---
 
 # ✨ Features
+
+## Modern JavaFX workspace
+
+- Persistent, collapsible navigation sidebar
+- Dashboard with live catalog, member, borrowing, returned, and overdue figures
+- Books and members management screens with search and service-backed CRUD
+- Borrow/return workflow with availability, member, record, and date validation
+- Searchable borrow-record history with Active, Returned, and Overdue filters
+- Light and dark themes, persisted locally between launches
+- Resizable desktop layout designed for 1440×900 and smaller desktop windows
 
 ## 📚 Book Management
 
@@ -78,10 +88,11 @@ Smart-Library-Management-System/
 │   │      FileManager.java
 │   │      InputValidator.java
 │   │
-│   │  ├── ui/ (DashboardView, BookView, MemberView, BorrowView)
+│   │  ├── ui/ (MainLayout, DashboardView, BookView, MemberView,
+│   │  │         BorrowView, BorrowRecordView, SettingsView)
 │   │  ├── Main.java (JavaFX entry point)
 │   │  └── ConsoleMain.java (console entry point)
-│   └── resources/css/style.css
+│   └── resources/css/style.css (light and dark design system)
 │
 ├── data/
 │
@@ -149,13 +160,13 @@ mvn javafx:run
 mvn exec:java -Dexec.mainClass=ConsoleMain
 ```
 
-The application currently keeps its records in memory for the duration of a run. The existing `data/` files are created/maintained by `FileManager`, but the original service layer does not load or persist records to them.
+The current service layer keeps catalog and borrowing records in memory for the duration of a run. `FileManager` continues to initialize the existing `data/` files; it is intentionally not bypassed or replaced by the GUI.
 
 ---
 
-# 📸 GUI screenshots
+# 🎨 Appearance
 
-Add dashboard, books, members, and borrow/return screenshots here.
+Use the header theme button or **Settings → Appearance** to switch between light and dark mode. The selected mode is saved with Java preferences and is restored next time the GUI starts.
 
 ---
 
