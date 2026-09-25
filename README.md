@@ -6,294 +6,596 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-A native desktop Smart Library Management System developed with **Java 26**, **Maven**, **JavaFX**, and object-oriented programming. The JavaFX application is the primary interface; the original menu-driven console version remains available.
+# 📚 Smart Library Management System
 
-The project focuses on **clean code**, **modular architecture**, and **object-oriented design**, making it an excellent learning project for Java beginners and a strong addition to a software engineering portfolio.
+A modern **Java-based Library Management System** built using **Object-Oriented Programming (OOP)** principles. The system provides both a **native JavaFX graphical interface** and a **console-based interface** for managing books, members, borrowing, returning, and library records.
 
----
-
-# 📖 Overview
-
-Managing a library manually can be difficult and time-consuming. This project simulates a basic library management system where books, members, and borrowing activities can be managed through a console interface.
-
-The application is organized into multiple packages following good software design practices, making it easy to understand, maintain, and extend.
+The project is designed as an academic and portfolio project with a clean service-based architecture, file persistence, validation, reusable JavaFX UI components, and Light/Dark theme support.
 
 ---
 
-# ✨ Features
+## ✨ Features
 
-## Modern JavaFX workspace
+### 📊 Dashboard
+- Total Books overview
+- Total Members overview
+- Currently Borrowed books
+- Overdue books
+- Recent borrowing activity
+- Borrowing activity visualization
+- Overdue record overview
+- Real-time statistics from persisted data
 
-- Persistent, collapsible navigation sidebar
-- Dashboard with live catalog, member, borrowing, returned, and overdue figures
-- Books and members management screens with search and service-backed CRUD
-- Borrow/return workflow with availability, member, record, and date validation
-- Searchable borrow-record history with Active, Returned, and Overdue filters
-- Light and dark themes, persisted locally between launches
-- Resizable desktop layout designed for 1440×900 and smaller desktop windows
+### 📚 Book Management
+- Add books
+- Update books
+- Delete books
+- Search books
+- View book information
+- Track total copies
+- Track available copies
+- Automatic availability updates
+- Book status indicators
+- Validation for book information
+- Protection against deleting books with active loans
 
-## 📚 Book Management
+### 👥 Member Management
+- Add members
+- Update members
+- Delete members
+- Search members
+- View member information
+- Track member borrowing activity
+- Member status management
+- Protection against deleting members with active loans
 
-- ➕ Add New Book
-- 📖 View All Books
-- 🔍 Search Book by ID
-- ✏ Update Book Quantity
-- 🗑 Delete Book
+### 🔄 Borrow & Return
+- Borrow books
+- Return books
+- Track borrow date
+- Track due date
+- Track return date
+- Prevent duplicate active borrowing
+- Automatic book quantity updates
+- Automatic availability restoration after return
+- Overdue detection
+- Validation for invalid borrowing/return operations
+
+### 📋 Borrow Records
+- View all borrowing records
+- Search records
+- Filter by status
+- Track:
+  - Record ID
+  - Member
+  - Book
+  - Borrow Date
+  - Due Date
+  - Return Date
+  - Status
+- Status support:
+  - Borrowed
+  - Returned
+  - Overdue
+
+### 🎨 Modern JavaFX UI
+- Professional desktop interface
+- Figma-inspired visual design
+- Persistent sidebar navigation
+- Dashboard layout
+- Modern cards and tables
+- Reusable UI components
+- Modal dialogs for forms
+- Search and filtering controls
+- Status badges
+- Success/error feedback
+- Responsive layout behavior
+- Clean typography and spacing
+
+### 🌗 Light & Dark Mode
+- Light theme
+- Dark theme
+- Theme switching
+- Theme-aware:
+  - Text
+  - Buttons
+  - Forms
+  - Tables
+  - Dialogs
+  - Status badges
+  - Navigation
+- Improved contrast and readability in both themes
+
+### 💾 File Persistence
+The system stores data using local text files.
+
+Persistent data includes:
+
+- Books
+- Members
+- Borrow Records
+
+Data remains available after restarting the application.
+
+### 🖥️ Console Interface
+The project also maintains a console-based interface for library operations.
+
+The console application uses the same service layer and business logic as the JavaFX application.
 
 ---
 
-## 👤 Member Management
-
-- ➕ Register New Member
-- 👥 View All Members
-- 🔍 Search Member by ID
-- 🗑 Delete Member
-
----
-
-## 🔄 Borrow Management
-
-- 📕 Borrow Book
-- 📗 Return Book
-- 📋 View Borrow Records
-
----
-
-## ✅ Input Validation
-
-- Integer input validation
-- Empty string validation
-- User-friendly error messages
-
----
-
-# 🏗 Project Structure
+## 🏗️ Project Architecture
 
 ```text
 Smart-Library-Management-System/
 │
-├── src/main/
-│   ├── java/
-│   │  ├── model/
-│   │      Book.java
-│   │      Member.java
-│   │      BorrowRecord.java
-│   │
-│   │  ├── service/
-│   │      BookService.java
-│   │      MemberService.java
-│   │      BorrowService.java
-│   │
-│   │  ├── utils/
-│   │      FileManager.java
-│   │      InputValidator.java
-│   │
-│   │  ├── ui/ (MainLayout, DashboardView, BookView, MemberView,
-│   │  │         BorrowView, BorrowRecordView, SettingsView)
-│   │  ├── Main.java (JavaFX entry point)
-│   │  └── ConsoleMain.java (console entry point)
-│   └── resources/css/style.css (light and dark design system)
-│
 ├── data/
+│   ├── books.txt
+│   ├── members.txt
+│   └── borrow_records.txt
 │
-├── README.md
-└── .gitignore
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   ├── model/
+│   │   │   │   ├── Book.java
+│   │   │   │   ├── Member.java
+│   │   │   │   └── BorrowRecord.java
+│   │   │   │
+│   │   │   ├── service/
+│   │   │   │   ├── BookService.java
+│   │   │   │   ├── MemberService.java
+│   │   │   │   └── BorrowService.java
+│   │   │   │
+│   │   │   ├── utils/
+│   │   │   │   ├── FileManager.java
+│   │   │   │   └── InputValidator.java
+│   │   │   │
+│   │   │   ├── ui/
+│   │   │   │   ├── MainLayout.java
+│   │   │   │   ├── DashboardView.java
+│   │   │   │   ├── BorrowRecordView.java
+│   │   │   │   └── ...
+│   │   │   │
+│   │   │   ├── Main.java
+│   │   │   └── ConsoleMain.java
+│   │   │
+│   │   └── resources/
+│   │       └── css/
+│   │           └── style.css
+│   │
+│   └── test/
+│       └── java/
+│           └── LibraryServiceTest.java
+│
+├── pom.xml
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
 ---
 
-# 🛠 Technologies Used
+## 🧩 Architecture Overview
 
-- Java 26
+### Model Layer
+
+Contains the core domain objects:
+
+- `Book`
+- `Member`
+- `BorrowRecord`
+
+These classes represent the main entities of the library system.
+
+### Service Layer
+
+Contains the application's business logic:
+
+- `BookService`
+- `MemberService`
+- `BorrowService`
+
+The service layer is responsible for:
+
+- CRUD operations
+- Borrowing rules
+- Return processing
+- Validation
+- Quantity management
+- Overdue calculation
+- Business rule enforcement
+
+The JavaFX UI does not duplicate this business logic.
+
+### Utility Layer
+
+Provides shared functionality:
+
+- `FileManager`
+- `InputValidator`
+
+Responsibilities include:
+
+- File reading/writing
+- Data persistence
+- Input validation
+- Safe handling of stored data
+
+### UI Layer
+
+The JavaFX interface is organized into reusable views and layouts.
+
+Major UI components include:
+
+- `MainLayout`
+- `DashboardView`
+- Books View
+- Members View
+- Borrow & Return View
+- Borrow Records View
+- Settings View
+
+The UI communicates with the service layer to display and update real application data.
+
+---
+
+## 🔄 System Workflow
+
+### Borrowing Workflow
+
+```text
+User
+  │
+  ▼
+JavaFX / Console Interface
+  │
+  ▼
+Service Layer
+  │
+  ├── Validate Request
+  ├── Check Member
+  ├── Check Book
+  ├── Check Availability
+  └── Create Borrow Record
+          │
+          ▼
+     File Persistence
+```
+
+### Returning Workflow
+
+```text
+Return Request
+      │
+      ▼
+BorrowService
+      │
+      ├── Validate Record
+      ├── Update Return Date
+      ├── Update Record Status
+      └── Restore Book Availability
+              │
+              ▼
+        File Persistence
+```
+
+---
+
+## 🔐 Business Rules
+
+### Book Availability
+
+Each book maintains:
+
+```text
+Total Copies
+Available Copies
+```
+
+The system ensures that available copies do not exceed total copies.
+
+### Borrowing
+
+A book cannot be borrowed when:
+
+```text
+Available Copies <= 0
+```
+
+A member cannot create an invalid duplicate active borrowing record for the same book.
+
+### Returning
+
+When a book is returned:
+
+```text
+Available Copies += 1
+```
+
+The corresponding borrow record is updated with:
+
+```text
+Return Date
+Status
+```
+
+### Deletion Protection
+
+Books or members with active borrowing relationships cannot be deleted.
+
+This prevents invalid references in the library records.
+
+### Overdue Detection
+
+A borrowing record can be identified as overdue based on its due date and return status.
+
+The dashboard and borrow records use this information to display overdue records.
+
+---
+
+## 🖥️ User Interface
+
+The JavaFX interface follows a modern desktop application design inspired by the project's Figma reference.
+
+### Main Navigation
+
+```text
+Dashboard
+Books
+Members
+Borrow & Return
+Borrow Records
+Settings
+```
+
+### UI Design Includes
+
+- Persistent sidebar
+- Page headers
+- Cards
+- Tables
+- Search fields
+- Filters
+- Modal forms
+- Confirmation dialogs
+- Status badges
+- Notification feedback
+- Light/Dark themes
+
+---
+
+## 🎨 Theme Support
+
+The application supports two main visual themes.
+
+### Light Mode
+
+Designed with:
+
+- White cards
+- Light application background
+- Dark readable text
+- Subtle borders
+- Purple primary accent
+
+### Dark Mode
+
+Designed with:
+
+- Dark application background
+- Dark cards
+- Light readable text
+- High-contrast inputs
+- Consistent accent colors
+
+The UI components are styled through JavaFX CSS.
+
+---
+
+## 🛠️ Technologies Used
+
+| Technology | Purpose |
+|---|---|
+| Java 26 | Programming Language |
+| JavaFX | Desktop GUI |
+| Maven | Build & Dependency Management |
+| JUnit | Testing |
+| JavaFX CSS | UI Styling |
+| Local Text Files | Data Persistence |
+| IntelliJ IDEA | Development Environment |
+| Git & GitHub | Version Control |
+
+---
+
+## 📦 Requirements
+
+Before running the project, make sure you have:
+
+- JDK 26
 - Maven
-- JavaFX 26.0.2
-- Object-Oriented Programming (OOP)
-- Java Collections Framework
-- IntelliJ IDEA
-- Git
-- GitHub
+- IntelliJ IDEA (recommended)
+- JavaFX dependencies configured through Maven
+
+Verify Java:
+
+```bash
+java -version
+```
+
+Verify Maven:
+
+```bash
+mvn -version
+```
 
 ---
 
-# 🧩 OOP Concepts Used
+## 🚀 Running the Project
 
-This project demonstrates the following Java OOP concepts:
-
-- ✅ Classes & Objects
-- ✅ Encapsulation
-- ✅ Constructors
-- ✅ Packages
-- ✅ Method Calling
-- ✅ ArrayList Collection
-
----
-
-# 🚀 Getting Started
-
-## Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/tawsiftalha2005/Smart-Library-Management-System.git
 ```
 
----
+### 2. Enter the Project Directory
 
-## Open the Project
+```bash
+cd Smart-Library-Management-System
+```
 
-Open the project using **IntelliJ IDEA**.
+### 3. Build the Project
 
----
+```bash
+mvn clean verify
+```
 
-## Run the Project
-
-Use JDK 26 and Maven. IntelliJ IDEA can import `pom.xml` as a Maven project; no manually configured JavaFX SDK path is needed.
-
-### Run the GUI (primary interface)
+### 4. Run the JavaFX Application
 
 ```bash
 mvn javafx:run
 ```
 
-### Run the console version
-
-```bash
-mvn exec:java -Dexec.mainClass=ConsoleMain
-```
-
-The current service layer keeps catalog and borrowing records in memory for the duration of a run. `FileManager` continues to initialize the existing `data/` files; it is intentionally not bypassed or replaced by the GUI.
-
 ---
 
-# 🎨 Appearance
+## 🖥️ Running from IntelliJ IDEA
 
-Use the header theme button or **Settings → Appearance** to switch between light and dark mode. The selected mode is saved with Java preferences and is restored next time the GUI starts.
+1. Open the project in IntelliJ IDEA.
+2. Make sure JDK 26 is selected.
+3. Allow Maven to load the dependencies.
+4. Reload the Maven project.
+5. Run the JavaFX main application.
 
----
-
-# 💻 Console Preview
+The project uses the Maven standard directory structure:
 
 ```text
-=========================================
-     SMART LIBRARY MANAGEMENT SYSTEM
-=========================================
-1. Book Management
-2. Member Management
-3. Borrow Book
-4. Return Book
-5. View Borrow Records
-6. Exit
-=========================================
-Enter your choice:
+src/main/java
+src/main/resources
+src/test/java
 ```
 
 ---
 
-# 📂 Packages Description
+## 💻 Running the Console Version
 
-## 📦 model
+The project also includes a console-based entry point:
 
-Contains all data model classes.
+```text
+ConsoleMain.java
+```
 
-- Book
-- Member
-- BorrowRecord
+The console interface uses the same service layer and persistence system as the JavaFX application.
 
----
+This allows the project to demonstrate both:
 
-## 📦 service
-
-Contains the business logic of the application.
-
-- BookService
-- MemberService
-- BorrowService
+- Console-based OOP application design
+- GUI-based desktop application design
 
 ---
 
-## 📦 utils
+## 🧪 Testing
 
-Contains helper classes.
+Unit tests are included for the main library service workflows.
 
-- InputValidator
-- FileManager
+Run:
+
+```bash
+mvn clean test
+```
+
+For a complete Maven verification:
+
+```bash
+mvn clean verify
+```
+
+The tests cover important scenarios such as:
+
+- Book operations
+- Member operations
+- Borrowing
+- Duplicate borrowing prevention
+- Returning
+- Quantity restoration
+- Persistence/reloading
 
 ---
 
-# 🎯 Learning Outcomes
+## 📁 Data Storage
 
-This project helped strengthen my understanding of:
+The application uses local text files for persistence.
 
-- Java Programming
+```text
+data/
+├── books.txt
+├── members.txt
+└── borrow_records.txt
+```
+
+This approach keeps the project lightweight and avoids requiring an external database.
+
+---
+
+## 🔮 Future Improvements
+
+Possible future improvements include:
+
+- Database integration using MySQL/PostgreSQL
+- User authentication and role management
+- Admin and librarian roles
+- Advanced reporting
+- PDF report generation
+- Email notifications
+- Fine calculation
+- Book cover images
+- Advanced filtering
+- Pagination for large datasets
+- Cloud-based data storage
+- Automated backup and restore
+- Improved analytics dashboard
+
+---
+
+## 🎯 Learning Objectives
+
+This project demonstrates practical application of:
+
 - Object-Oriented Programming
-- Collections Framework
-- Package Organization
-- Modular Programming
-- Console Application Development
-- Software Design
-- Git & GitHub Workflow
+- Encapsulation
+- Abstraction
+- Inheritance
+- Polymorphism
+- Composition
+- Separation of concerns
+- Service-layer architecture
+- File handling
+- Data validation
+- Exception handling
+- JavaFX GUI development
+- JavaFX CSS styling
+- Maven project management
+- Unit testing
+- Git & GitHub workflow
 
 ---
 
-# 📈 Future Improvements
+## 👨‍💻 Developer
 
-The following features are planned for future versions:
+**Md. Wahid Tawsif Talha**
 
-- 🔐 Login System
-- 📂 Permanent File Storage
-- 🗃 Database Integration (MySQL)
-- 🔎 Search by Book Title
-- 📊 Library Statistics Dashboard
-- 📅 Due Date Management
-- 💰 Fine Calculation
-- 📚 Book Reservation
-- 🔎 Richer multi-field search and report export
-
----
-
-# 💡 Design Philosophy
-
-The goal of this project is not only to build a working Library Management System but also to write **clean**, **organized**, and **maintainable** Java code.
-
-Each package has a specific responsibility:
-
-- **model** → Data representation
-- **service** → Business logic
-- **utils** → Utility/helper classes
-
-This separation makes the project easier to understand and extend.
-
----
-
-# 👨‍💻 Developer
-
-## Md. Wahid Tawsif Talha
-
-**Software Engineering Student**
+B.Sc. in Software Engineering
 
 Green University of Bangladesh
 
-### GitHub
+GitHub:
 
 https://github.com/tawsiftalha2005
 
 ---
 
-# 🤝 Contributing
-
-Contributions, suggestions, and improvements are always welcome.
-
-Feel free to fork this repository and submit a pull request.
-
----
-
-# ⭐ Support
-
-If you found this project helpful, please consider giving it a **⭐ Star** on GitHub.
-
-Your support motivates me to build more open-source projects.
-
----
-
 ## 📄 License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the MIT License.
+
+See the [LICENSE](LICENSE) file for details.
