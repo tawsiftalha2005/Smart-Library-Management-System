@@ -1,0 +1,27 @@
+package ui;
+
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import model.Member;
+import service.MemberService;
+
+public class MemberView extends BorderPane {
+    private final MemberService service; private final TableView<Member> table = new TableView<>();
+    private final TextField id = new TextField(), name = new TextField(), email = new TextField(), phone = new TextField(), search = new TextField();
+    public MemberView(MemberService service, Runnable onChange) {
+        this.service = service; setPadding(new Insets(24,28,28,28)); getStyleClass().add("content"); Label heading = new Label("Members"); heading.getStyleClass().add("page-title"); Label description=new Label("Manage registered library members");description.getStyleClass().add("muted-text");Button addMember=new Button("＋  Add Member");addMember.setOnAction(e->editDialog(false));Region spacer=new Region();HBox.setHgrow(spacer,Priority.ALWAYS);HBox titleRow=new HBox(heading,spacer,addMember);VBox intro=new VBox(5,titleRow,description);
+        search.setPromptText("⌕   Search by name, email or ID...");search.getStyleClass().add("search-field");search.textProperty().addListener((o,a,b)->refresh());VBox top=new VBox(18,intro,search);setTop(top);BorderPane.setMargin(top,new Insets(0,0,18,0));
+        table.getColumns().addAll(column("MEMBER ID",m->String.format("MB-%03d",m.getId())),column("MEMBER",Member::getName),column("EMAIL",Member::getEmail),column("PHONE",Member::getPhone),actionColumn());table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);table.setPlaceholder(new Label("No members found. Add your first member."));table.getSelectionModel().selectedItemProperty().addListener((o,old,m)->{if(m!=null)fill(m);});setCenter(table);refresh();
+    }
+    private TableColumn<Member,Member> actionColumn(){TableColumn<Member,Member> c=new TableColumn<>("ACTIONS");c.setCellValueFactory(v->new javafx.beans.property.SimpleObjectProperty<>(v.getValue()));c.setCellFactory(col->new TableCell<>(){private final Button edit=new Button("✎"),del=new Button("⌫");private final HBox box=new HBox(5,edit,del);{edit.getStyleClass().add("icon-button");del.getStyleClass().addAll("icon-button","danger-button");edit.setOnAction(e->{Member m=getItem();if(m!=null){fill(m);editDialog(true);}});del.setOnAction(e->{Member m=getItem();if(m!=null){id.setText(String.valueOf(m.getId()));delete();}});}protected void updateItem(Member m,boolean empty){super.updateItem(m,empty);setGraphic(empty?null:box);}});return c;}
+    private void editDialog(boolean update){if(!update)clear();Dialog<ButtonType>d=new Dialog<>();d.setTitle(update?"Edit member":"Add member");d.getDialogPane().getButtonTypes().addAll(ButtonType.OK,ButtonType.CANCEL);GridPane g=new GridPane();g.setHgap(10);g.setVgap(6);g.setPadding(new Insets(12));field(g,"Member ID",id,0);field(g,"Name",name,1);field(g,"Email",email,2);field(g,"Phone",phone,3);d.getDialogPane().setContent(g);d.showAndWait().ifPresent(result->{if(result==ButtonType.OK&&save(update)){UiSupport.info(update?"Member updated":"Member added",update?"The member was updated successfully.":"The member was added successfully.");clear();}});}
+    private <T> TableColumn<Member,T> column(String text, java.util.function.Function<Member,T> f) { TableColumn<Member,T> c = new TableColumn<>(text); c.setCellValueFactory(d -> new javafx.beans.property.SimpleObjectProperty<>(f.apply(d.getValue()))); return c; }
+    private void field(GridPane g,String label,TextField f,int index){f.setPromptText(label);f.setMaxWidth(Double.MAX_VALUE);int labelRow=index*2;g.add(new Label(label),0,labelRow);g.add(f,0,labelRow+1);}
+    private boolean save(boolean update) { if(!UiSupport.textPresent(id,name,email,phone))return false; Integer memberId=UiSupport.positiveId(id,"Member ID"); if(memberId==null)return false; if(!email.getText().contains("@")){UiSupport.warning("Invalid email","Enter a valid email address.");return false;} boolean ok=update?service.updateMember(memberId,name.getText().trim(),email.getText().trim(),phone.getText().trim()):service.addMember(new Member(memberId,name.getText().trim(),email.getText().trim(),phone.getText().trim())); if(!ok){UiSupport.warning(update?"Member not found":"Duplicate ID",update?"Select an existing member or enter its valid ID.":"A member with that ID already exists.");return false;} refresh();clear();return true; }
+    private void delete(){Integer memberId=UiSupport.positiveId(id,"Member ID");if(memberId!=null&&UiSupport.confirm("Delete member","Delete this member?")){if(service.deleteMember(memberId)){UiSupport.info("Member deleted","The member was deleted.");refresh();clear();}else UiSupport.warning("Member not found","No member has that ID.");}}
+    private void refresh(){String q=search.getText().trim().toLowerCase();table.setItems(FXCollections.observableArrayList(service.getMembers().stream().filter(m->q.isEmpty()||String.valueOf(m.getId()).contains(q)||m.getName().toLowerCase().contains(q)||m.getEmail().toLowerCase().contains(q)||m.getPhone().toLowerCase().contains(q)).toList()));}
+    private void fill(Member m){id.setText(String.valueOf(m.getId()));name.setText(m.getName());email.setText(m.getEmail());phone.setText(m.getPhone());}
+    private void clear(){id.clear();name.clear();email.clear();phone.clear();table.getSelectionModel().clearSelection();}
+}
