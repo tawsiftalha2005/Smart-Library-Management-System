@@ -1,0 +1,42 @@
+name: Build Installers
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            jpackage_type: DMG
+            artifact_name: mac-dmg
+          - os: windows-latest
+            jpackage_type: MSI
+            artifact_name: windows-msi
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 26
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '26'
+
+      - name: Install WiX Toolset (Windows only)
+        if: runner.os == 'Windows'
+        run: choco install wixtoolset -y
+
+      - name: Build installer
+        run: mvn -B clean package jpackage:jpackage -Djpackage.type=${{ matrix.jpackage_type }}
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: target/dist/*
