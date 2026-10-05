@@ -5,11 +5,32 @@
 ![OOP](https://img.shields.io/badge/OOP-Java-success?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
-
+![Build Installers](https://github.com/tawsiftalha2005/Smart-Library-Management-System/actions/workflows/build-installers.yml/badge.svg)
 
 A modern **Java-based Library Management System** built using **Object-Oriented Programming (OOP)** principles. The system provides both a **native JavaFX graphical interface** and a **console-based interface** for managing books, members, borrowing, returning, and library records.
 
-The project is designed as an academic and portfolio project with a clean service-based architecture, file persistence, validation, reusable JavaFX UI components, and Light/Dark theme support.
+The project is designed as an academic and portfolio project with a clean service-based architecture, real file persistence, validation, reusable JavaFX UI components, Light/Dark theme support, and ready-to-install native desktop installers for macOS and Windows.
+
+---
+
+## 📥 Download & Install (No Java Required)
+
+You don't need Java, Maven, or any developer tools to use this app — just download the installer for your operating system.
+
+1. Go to the [Actions tab](https://github.com/tawsiftalha2005/Smart-Library-Management-System/actions/workflows/build-installers.yml) of this repository.
+2. Click the most recent run with a green checkmark ✅.
+3. Scroll down to the **Artifacts** section and download:
+   - `mac-dmg` → for macOS
+   - `windows-msi` → for Windows
+4. Unzip the download, then run the installer inside (`.dmg` on macOS, `.msi` on Windows).
+
+> **First-run warning is normal:** since this app isn't signed with a paid Apple/Microsoft developer certificate, your OS will warn about an "unidentified developer" (macOS) or show a SmartScreen prompt (Windows) the first time you open it.
+> - **macOS:** right-click the app → **Open** → confirm **Open**.
+> - **Windows:** click **More info** → **Run anyway**.
+>
+> This only needs to be done once per machine.
+
+Each user's library data (books, members, borrow records) is stored locally on their own machine and is private to them — nothing is shared between installs.
 
 ---
 
@@ -79,7 +100,7 @@ The project is designed as an academic and portfolio project with a clean servic
 
 ### 🎨 Modern JavaFX UI
 - Professional desktop interface
-- Figma-inspired visual design
+- Figma-inspired visual design (see `design/` folder for reference screenshots)
 - Persistent sidebar navigation
 - Dashboard layout
 - Modern cards and tables
@@ -105,8 +126,8 @@ The project is designed as an academic and portfolio project with a clean servic
   - Navigation
 - Improved contrast and readability in both themes
 
-### 💾 File Persistence
-The system stores data using local text files.
+### 💾 Real File Persistence
+Every service (`BookService`, `MemberService`, `BorrowService`) loads its data from disk on startup and saves after every add, update, delete, borrow, and return — not just on exit.
 
 Persistent data includes:
 
@@ -114,12 +135,16 @@ Persistent data includes:
 - Members
 - Borrow Records
 
-Data remains available after restarting the application.
+Data remains available after fully closing and relaunching the application, and survives app updates since it's stored outside the application's own install folder (see **Data Storage** below).
 
 ### 🖥️ Console Interface
 The project also maintains a console-based interface for library operations.
 
 The console application uses the same service layer and business logic as the JavaFX application.
+
+### 📦 Native Installers
+- Packaged with `jlink` + `jpackage` (via the `jpackage-maven-plugin`) — bundles a private Java runtime, so end users don't need Java installed.
+- Built automatically for both macOS (`.dmg`) and Windows (`.msi`) on every push to `main`, via GitHub Actions (`.github/workflows/build-installers.yml`).
 
 ---
 
@@ -128,10 +153,12 @@ The console application uses the same service layer and business logic as the Ja
 ```text
 Smart-Library-Management-System/
 │
-├── data/
-│   ├── books.txt
-│   ├── members.txt
-│   └── borrow_records.txt
+├── .github/
+│   └── workflows/
+│       └── build-installers.yml   # CI: builds macOS + Windows installers
+│
+├── design/
+│   └── *.jpeg                     # Figma design reference screenshots
 │
 ├── src/
 │   ├── main/
@@ -148,6 +175,7 @@ Smart-Library-Management-System/
 │   │   │   │
 │   │   │   ├── utils/
 │   │   │   │   ├── FileManager.java
+│   │   │   │   ├── CsvFormat.java
 │   │   │   │   └── InputValidator.java
 │   │   │   │
 │   │   │   ├── ui/
@@ -204,6 +232,7 @@ The service layer is responsible for:
 - Quantity management
 - Overdue calculation
 - Business rule enforcement
+- Loading data from disk on startup and saving after every mutation
 
 The JavaFX UI does not duplicate this business logic.
 
@@ -212,12 +241,13 @@ The JavaFX UI does not duplicate this business logic.
 Provides shared functionality:
 
 - `FileManager`
+- `CsvFormat`
 - `InputValidator`
 
 Responsibilities include:
 
-- File reading/writing
-- Data persistence
+- Resolving the per-user data directory and file reading/writing
+- Serializing/deserializing records to and from the on-disk format
 - Input validation
 - Safe handling of stored data
 
@@ -335,7 +365,7 @@ The dashboard and borrow records use this information to display overdue records
 
 ## 🖥️ User Interface
 
-The JavaFX interface follows a modern desktop application design inspired by the project's Figma reference.
+The JavaFX interface follows a modern desktop application design inspired by the project's Figma reference (see `design/` for the source screenshots).
 
 ### Main Navigation
 
@@ -402,6 +432,8 @@ The UI components are styled through JavaFX CSS.
 | JUnit | Testing |
 | JavaFX CSS | UI Styling |
 | Local Text Files | Data Persistence |
+| jlink / jpackage | Native installer packaging |
+| GitHub Actions | CI — automated installer builds |
 | IntelliJ IDEA | Development Environment |
 | Git & GitHub | Version Control |
 
@@ -409,8 +441,10 @@ The UI components are styled through JavaFX CSS.
 
 ## 📦 Requirements
 
-Before running the project, make sure you have:
+### To just use the app
+None — download the installer from the **Download & Install** section above. The installer bundles its own Java runtime.
 
+### To build or modify the project from source
 - JDK 26
 - Maven
 - IntelliJ IDEA (recommended)
@@ -430,7 +464,7 @@ mvn -version
 
 ---
 
-## 🚀 Running the Project
+## 🚀 Running the Project (For Developers)
 
 ### 1. Clone the Repository
 
@@ -455,6 +489,14 @@ mvn clean verify
 ```bash
 mvn javafx:run
 ```
+
+### 5. Build a Native Installer Locally
+
+```bash
+mvn clean package jpackage:jpackage "-Djpackage.type=DMG"
+```
+
+Use `MSI` or `EXE` instead of `DMG` on Windows. The installer is produced under `target/dist/`. Note that you can only build a macOS installer on macOS, and a Windows installer on Windows — the GitHub Actions workflow builds both automatically in the cloud regardless of what OS you're on.
 
 ---
 
@@ -523,16 +565,25 @@ The tests cover important scenarios such as:
 
 ## 📁 Data Storage
 
-The application uses local text files for persistence.
+Data is **not** stored inside the project/installation folder — it's stored per-user, in a standard OS-specific app-data location, so the installed app works correctly for any user without needing write access to its own install directory:
+
+| OS | Location |
+|---|---|
+| macOS | `~/Library/Application Support/SmartLibrary/` |
+| Windows | `%APPDATA%\SmartLibrary\` |
+| Linux | `~/.smartlibrary/` |
+
+Each location contains:
 
 ```text
-data/
-├── books.txt
-├── members.txt
-└── borrow_records.txt
+books.txt
+members.txt
+borrow_records.txt
 ```
 
-This approach keeps the project lightweight and avoids requiring an external database.
+> **Note:** this repository also contains a `data/` folder with sample `.txt` files from earlier development. These are no longer read by the application — they're leftover from before per-user storage was implemented and can be safely removed or added to `.gitignore`.
+
+This approach keeps the project lightweight, avoids requiring an external database, and gives every user their own private, isolated data.
 
 ---
 
@@ -553,6 +604,7 @@ Possible future improvements include:
 - Cloud-based data storage
 - Automated backup and restore
 - Improved analytics dashboard
+- Code-signed/notarized installers to remove the first-run OS warnings
 
 ---
 
@@ -576,6 +628,8 @@ This project demonstrates practical application of:
 - Maven project management
 - Unit testing
 - Git & GitHub workflow
+- CI/CD with GitHub Actions
+- Cross-platform native packaging
 
 ---
 
