@@ -5,24 +5,24 @@
 .login-scroll { -fx-fit-to-width: true; }
 .login-card { -fx-background-color: white; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(22,27,47,0.18), 30, 0.16, 0, 14); }
 .login-dark .login-card { -fx-background-color: #141a2d; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 32, 0.2, 0, 14); }
-.login-title { -fx-font-size: 28px; -fx-font-weight: 700; -fx-text-fill: #171923; }
-.login-subtitle { -fx-font-size: 16px; -fx-text-fill: #777d89; }
-.login-label { -fx-font-size: 15px; -fx-font-weight: 700; -fx-text-fill: #454957; }
-.login-input { -fx-pref-height: 58px; -fx-background-color: #f8f9fb; -fx-background-radius: 9px; -fx-border-color: #dfe1e8; -fx-border-radius: 9px; -fx-font-size: 16px; -fx-padding: 0 16px; -fx-prompt-text-fill: #9298a2; }
+.login-title { -fx-font-size: 26px; -fx-font-weight: 700; -fx-text-fill: #171923; }
+.login-subtitle { -fx-font-size: 14px; -fx-text-fill: #777d89; }
+.login-label { -fx-font-size: 14px; -fx-font-weight: 700; -fx-text-fill: #454957; }
+.login-input { -fx-pref-height: 50px; -fx-background-color: #f8f9fb; -fx-background-radius: 9px; -fx-border-color: #dfe1e8; -fx-border-radius: 9px; -fx-font-size: 14px; -fx-padding: 0 14px; -fx-prompt-text-fill: #9298a2; }
 .login-input:focused { -fx-border-color: #675de8; }
-.login-brand-mark { -fx-background-color: #5a4ce0; -fx-background-radius: 13px; -fx-text-fill: white; -fx-font-size: 23px; -fx-font-weight: 700; -fx-alignment: center; -fx-effect: dropshadow(gaussian, rgba(79,59,208,0.24), 12, 0.1, 0, 4); }
-.login-brand-name { -fx-font-size: 22px; -fx-font-weight: 700; -fx-text-fill: #171923; }
-.login-brand-subtitle { -fx-font-size: 15px; -fx-text-fill: #777d89; }
+.login-brand-mark { -fx-background-color: #5a4ce0; -fx-background-radius: 12px; -fx-text-fill: white; -fx-font-size: 21px; -fx-font-weight: 700; -fx-alignment: center; -fx-effect: dropshadow(gaussian, rgba(79,59,208,0.24), 12, 0.1, 0, 4); }
+.login-brand-name { -fx-font-size: 20px; -fx-font-weight: 700; -fx-text-fill: #171923; }
+.login-brand-subtitle { -fx-font-size: 13px; -fx-text-fill: #777d89; }
 .password-row { -fx-alignment: center; -fx-background-color: #f8f9fb; -fx-background-radius: 9px; -fx-border-color: #dfe1e8; -fx-border-radius: 9px; }
 .password-row .login-input { -fx-border-color: transparent; -fx-background-color: transparent; }
 .password-eye { -fx-background-color: transparent; -fx-text-fill: #777d89; -fx-font-size: 23px; -fx-padding: 8 14; }
-.login-remember { -fx-text-fill: #777d89; -fx-font-size: 15px; -fx-padding: 1 0; }
+.login-remember { -fx-text-fill: #777d89; -fx-font-size: 14px; -fx-padding: 1 0; }
 .login-remember .box { -fx-background-color: #f8f9fb; -fx-border-color: #cfd2da; -fx-border-radius: 3px; }
 .login-remember:selected .box { -fx-background-color: #5142d4; -fx-border-color: #5142d4; }
-.login-submit { -fx-pref-height: 61px; -fx-background-color: #4938cb; -fx-background-radius: 9px; -fx-font-size: 17px; -fx-font-weight: 700; -fx-effect: dropshadow(gaussian, rgba(79,59,208,0.28), 16, 0.14, 0, 6); }
+.login-submit { -fx-pref-height: 52px; -fx-background-color: #4938cb; -fx-background-radius: 9px; -fx-font-size: 16px; -fx-font-weight: 700; -fx-effect: dropshadow(gaussian, rgba(79,59,208,0.28), 16, 0.14, 0, 6); }
 .login-submit:hover { -fx-background-color: #3e30b8; }
 .login-submit:disabled { -fx-opacity: 0.88; }
-.login-link { -fx-background-color: transparent; -fx-text-fill: #5142c8; -fx-font-size: 15px; -fx-font-weight: 700; }
+.login-link { -fx-background-color: transparent; -fx-text-fill: #5142c8; -fx-font-size: 14px; -fx-font-weight: 700; }
 .login-theme-button { -fx-background-color: white; -fx-text-fill: #777d89; -fx-border-color: #e0e2e8; -fx-border-radius: 12px; -fx-background-radius: 12px; -fx-padding: 12 18; -fx-font-size: 15px; -fx-effect: dropshadow(gaussian, rgba(20,24,40,0.10), 8, 0.1, 0, 2); }
 .login-footer { -fx-text-fill: #777d89; -fx-font-size: 12px; }
 .login-help { -fx-background-color: #242424; -fx-background-radius: 24px; -fx-border-color: #777; -fx-border-radius: 24px; -fx-pref-width: 48px; -fx-pref-height: 48px; -fx-padding: 0; -fx-font-size: 22px; -fx-font-weight: 400; }

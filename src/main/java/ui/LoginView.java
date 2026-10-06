@@ -80,8 +80,8 @@ public final class LoginView extends BorderPane {
 
     private void buildCard() {
         card.getStyleClass().add("login-card");
-        VBox content = new VBox(11);
-        content.setPadding(new Insets(22, 32, 22, 32));
+        VBox content = new VBox(9);
+        content.setPadding(new Insets(20, 30, 18, 30));
         content.setAlignment(Pos.TOP_CENTER);
         mascotFigure = mascot();
         HBox brand = new HBox(15, brandMark(), brandText());
@@ -112,7 +112,7 @@ public final class LoginView extends BorderPane {
         forgot.setOnAction(e -> UiSupport.info("Password help", "Contact your library administrator to reset your password."));
 
         speech.getStyleClass().add("mascot-speech"); speech.setVisible(false); speech.setManaged(false);
-        mascotArea = new StackPane(mascotFigure, speech); mascotArea.setMinHeight(160);
+        mascotArea = new StackPane(mascotFigure, speech); mascotArea.setMinHeight(132);
         StackPane.setAlignment(speech, Pos.TOP_CENTER); StackPane.setMargin(speech, new Insets(0,0,0,0));
         content.getChildren().addAll(mascotArea, brand, intro, usernameBox, passwordBox, remember, submit, forgot);
         card.getChildren().add(content);
@@ -133,8 +133,8 @@ public final class LoginView extends BorderPane {
     private VBox brandText() { Label name = new Label("Smart Library"); name.getStyleClass().add("login-brand-name"); Label sub = new Label("Management System"); sub.getStyleClass().add("login-brand-subtitle"); return new VBox(2,name,sub); }
 
     private StackPane mascot() {
-        mascotCanvas = new Canvas(220, 160);
-        StackPane holder = new StackPane(mascotCanvas); holder.setMinHeight(160); holder.setMaxHeight(160);
+        mascotCanvas = new Canvas(180, 132);
+        StackPane holder = new StackPane(mascotCanvas); holder.setMinHeight(132); holder.setMaxHeight(132);
         drawMascot(false, false);
         return holder;
     }
@@ -143,7 +143,7 @@ public final class LoginView extends BorderPane {
         GraphicsContext g = mascotCanvas.getGraphicsContext2D();
         g.setTransform(1, 0, 0, 1, 0, 0);
         g.clearRect(0, 0, mascotCanvas.getWidth(), mascotCanvas.getHeight());
-        g.translate(11, 2); g.scale(0.9, 0.9);
+        g.translate(5, 1); g.scale(0.74, 0.74);
         Color purple = Color.web("#6861ed"), darkPurple = Color.web("#4945c8"), face = Color.web("#f5f5ff");
         javafx.scene.paint.LinearGradient shell = new javafx.scene.paint.LinearGradient(0,0,0,1,true,javafx.scene.paint.CycleMethod.NO_CYCLE,
                 new javafx.scene.paint.Stop(0,Color.web("#827bfa")),new javafx.scene.paint.Stop(1,Color.web("#5e57df")));
