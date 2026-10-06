@@ -9,7 +9,7 @@
 
 A modern **Java-based Library Management System** built using **Object-Oriented Programming (OOP)** principles. The system provides both a **native JavaFX graphical interface** and a **console-based interface** for managing books, members, borrowing, returning, and library records.
 
-The project is designed as an academic and portfolio project with a clean service-based architecture, real file persistence, validation, reusable JavaFX UI components, Light/Dark theme support, and ready-to-install native desktop installers for macOS and Windows.
+The project is designed as an academic and portfolio project with a clean service-based architecture, real file persistence, validation, reusable JavaFX UI components, an animated login experience, Light/Dark theme support, and ready-to-install native desktop installers for macOS and Windows.
 
 ---
 
@@ -30,11 +30,31 @@ You don't need Java, Maven, or any developer tools to use this app — just down
 >
 > This only needs to be done once per machine.
 
+### 🔑 Demo Login
+
+On first launch you'll land on the login screen. Use:
+
+```text
+Username: admin  (or admin@smartlibrary.edu)
+Password: admin123
+```
+
 Each user's library data (books, members, borrow records) is stored locally on their own machine and is private to them — nothing is shared between installs.
 
 ---
 
 ## ✨ Features
+
+### 🔐 Authentication
+- Animated login screen with a friendly robot mascot
+- Three mascot states, each with its own animation:
+  - **Idle** — subtle looping bounce while waiting for input
+  - **Success** — arms-up celebration with confetti and a "Welcome back!" message on correct credentials
+  - **Error** — a shake and frown with an "Oops, that's not right!" message on incorrect credentials
+- Real credential validation (incorrect credentials are rejected, not just cosmetically)
+- "Remember me" option
+- Logout from the avatar menu (top-right header), with a confirmation dialog
+- Logging out returns to the login screen without touching any saved library data
 
 ### 📊 Dashboard
 - Total Books overview
@@ -80,6 +100,7 @@ Each user's library data (books, members, borrow records) is stored locally on t
 - Automatic availability restoration after return
 - Overdue detection
 - Validation for invalid borrowing/return operations
+- Responsive layout — side-by-side panels on wide windows, stacked with scrolling on narrower ones
 
 ### 📋 Borrow Records
 - View all borrowing records
@@ -124,6 +145,7 @@ Each user's library data (books, members, borrow records) is stored locally on t
   - Dialogs
   - Status badges
   - Navigation
+  - Login screen
 - Improved contrast and readability in both themes
 
 ### 💾 Real File Persistence
@@ -180,7 +202,9 @@ Smart-Library-Management-System/
 │   │   │   │
 │   │   │   ├── ui/
 │   │   │   │   ├── MainLayout.java
+│   │   │   │   ├── LoginView.java
 │   │   │   │   ├── DashboardView.java
+│   │   │   │   ├── BorrowView.java
 │   │   │   │   ├── BorrowRecordView.java
 │   │   │   │   └── ...
 │   │   │   │
@@ -189,7 +213,8 @@ Smart-Library-Management-System/
 │   │   │
 │   │   └── resources/
 │   │       └── css/
-│   │           └── style.css
+│   │           ├── style.css
+│   │           └── login.css
 │   │
 │   └── test/
 │       └── java/
@@ -257,6 +282,7 @@ The JavaFX interface is organized into reusable views and layouts.
 
 Major UI components include:
 
+- `LoginView` — animated authentication screen, entry point of the app
 - `MainLayout`
 - `DashboardView`
 - Books View
@@ -270,6 +296,30 @@ The UI communicates with the service layer to display and update real applicatio
 ---
 
 ## 🔄 System Workflow
+
+### Login Workflow
+
+```text
+App Launch
+    │
+    ▼
+LoginView (Idle animation)
+    │
+    ├── Correct credentials → Success animation → MainLayout (Dashboard)
+    └── Incorrect credentials → Error animation → stays on LoginView
+```
+
+### Logout Workflow
+
+```text
+Avatar Menu → Log out
+    │
+    ▼
+Confirmation Dialog
+    │
+    ├── Cancel → stays in app
+    └── Yes, log out → returns to LoginView (library data untouched)
+```
 
 ### Borrowing Workflow
 
@@ -370,6 +420,9 @@ The JavaFX interface follows a modern desktop application design inspired by the
 ### Main Navigation
 
 ```text
+Login (animated, entry point)
+  │
+  ▼
 Dashboard
 Books
 Members
@@ -380,6 +433,7 @@ Settings
 
 ### UI Design Includes
 
+- Animated login screen with mascot feedback
 - Persistent sidebar
 - Page headers
 - Cards
@@ -418,7 +472,7 @@ Designed with:
 - High-contrast inputs
 - Consistent accent colors
 
-The UI components are styled through JavaFX CSS.
+The UI components, including the login screen, are styled through JavaFX CSS.
 
 ---
 
@@ -490,6 +544,8 @@ mvn clean verify
 mvn javafx:run
 ```
 
+> **Note:** always run the app via `mvn javafx:run` (or the packaged installer), not IntelliJ's own Run button — the IDE's default Run configuration doesn't supply the JavaFX module-path VM options that the Maven plugin adds automatically, and will fail with "JavaFX runtime components are missing."
+
 ### 5. Build a Native Installer Locally
 
 ```bash
@@ -506,7 +562,7 @@ Use `MSI` or `EXE` instead of `DMG` on Windows. The installer is produced under 
 2. Make sure JDK 26 is selected.
 3. Allow Maven to load the dependencies.
 4. Reload the Maven project.
-5. Run the JavaFX main application.
+5. Run the JavaFX application via the Maven `javafx:run` goal (not the IDE's green Run button — see the note above).
 
 The project uses the Maven standard directory structure:
 
@@ -581,8 +637,6 @@ members.txt
 borrow_records.txt
 ```
 
-> **Note:** this repository also contains a `data/` folder with sample `.txt` files from earlier development. These are no longer read by the application — they're leftover from before per-user storage was implemented and can be safely removed or added to `.gitignore`.
-
 This approach keeps the project lightweight, avoids requiring an external database, and gives every user their own private, isolated data.
 
 ---
@@ -592,7 +646,7 @@ This approach keeps the project lightweight, avoids requiring an external databa
 Possible future improvements include:
 
 - Database integration using MySQL/PostgreSQL
-- User authentication and role management
+- Multi-user accounts and role management (currently a single demo admin account)
 - Admin and librarian roles
 - Advanced reporting
 - PDF report generation
@@ -624,7 +678,7 @@ This project demonstrates practical application of:
 - Data validation
 - Exception handling
 - JavaFX GUI development
-- JavaFX CSS styling
+- JavaFX CSS styling and animation (Timeline/Transition-based mascot states)
 - Maven project management
 - Unit testing
 - Git & GitHub workflow
