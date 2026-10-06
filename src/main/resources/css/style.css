@@ -4,7 +4,7 @@
 .top-header { -fx-background-color: #ffffff; -fx-border-color: transparent transparent #e3e5eb transparent; -fx-border-width: 0 0 1 0; }
 .header-title { -fx-font-size: 19px; -fx-font-weight: 700; -fx-text-fill: #171923; }
 .header-subtitle, .muted-text { -fx-text-fill: #777d89; -fx-font-size: 13px; }
-.header-search { -fx-pref-width: 290px; -fx-pref-height: 40px; -fx-background-color: #f3f4f8; }
+.header-search { -fx-pref-width: 210px; -fx-min-width: 110px; -fx-max-width: 290px; -fx-pref-height: 40px; -fx-background-color: #f3f4f8; }
 .sidebar { -fx-background-color: #151827; -fx-pref-width: 260px; -fx-min-width: 260px; -fx-border-color: transparent #25293b transparent transparent; -fx-border-width: 0 1 0 0; }
 .sidebar-collapsed { -fx-pref-width: 68px; -fx-min-width: 68px; }
 .sidebar-collapsed .wordmark, .sidebar-collapsed .nav-caption, .sidebar-collapsed .admin-text { -fx-opacity: 0; -fx-max-width: 0; -fx-pref-width: 0; }

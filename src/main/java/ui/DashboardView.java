@@ -41,13 +41,14 @@ public class DashboardView extends ScrollPane {
                 stat("♙", "Total Members", members.totalMembers(), "Registered members"),
                 stat("↔", "Currently Borrowed", active(), "Copies on active loan"),
                 stat("⚠", "Overdue Books", overdue(), "Requires attention"));
-        cards.getChildren().forEach(node -> HBox.setHgrow(node, Priority.ALWAYS));
+        cards.getChildren().forEach(node -> { HBox.setHgrow(node, Priority.ALWAYS); ((Region) node).setMinWidth(0); });
 
         VBox activity = new VBox(8, new Label("Borrowing Activity"), muted("Last 7 days"), chart());
         activity.getStyleClass().add("panel");
         VBox popular = popular();
         HBox middle = new HBox(16, activity, popular);
-        HBox.setHgrow(activity, Priority.ALWAYS); activity.setPrefWidth(700); popular.setPrefWidth(330);
+        HBox.setHgrow(activity, Priority.ALWAYS); HBox.setHgrow(popular, Priority.ALWAYS);
+        activity.setMinWidth(0); popular.setMinWidth(0);
         HBox lower = new HBox(16, recent(), overduePanel());
         HBox.setHgrow(lower.getChildren().get(0), Priority.ALWAYS); HBox.setHgrow(lower.getChildren().get(1), Priority.ALWAYS);
         body.getChildren().addAll(welcome, cards, middle, lower);
@@ -95,7 +96,7 @@ public class DashboardView extends ScrollPane {
         if (ranked.isEmpty()) box.getChildren().add(muted("No books in the catalog yet."));
         else for (Book book : ranked) {
             Label cover = new Label(book.getTitle().isBlank()?"?":book.getTitle().substring(0,1).toUpperCase()); cover.getStyleClass().add("book-cover"); cover.setMinWidth(40);
-            Label name = new Label(book.getTitle()); name.getStyleClass().add("row-title");
+            Label name = new Label(book.getTitle()); name.setWrapText(true); name.getStyleClass().add("row-title");
             Label author = muted(book.getAuthor()); VBox details = new VBox(4,name,author); HBox row = new HBox(12,cover,details); row.setAlignment(javafx.geometry.Pos.CENTER_LEFT); row.setPadding(new Insets(13,0,13,0));
             Label count = new Label(counts.getOrDefault(book.getId(),0L)+"×"); count.getStyleClass().add("stat-icon"); Region gap = new Region(); HBox.setHgrow(gap,Priority.ALWAYS); row.getChildren().addAll(gap,count); box.getChildren().addAll(new Separator(),row);
         }
