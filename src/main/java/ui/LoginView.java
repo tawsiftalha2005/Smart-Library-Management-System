@@ -56,15 +56,6 @@ public final class LoginView extends BorderPane {
         setTop(top);
 
         buildCard();
-        StackPane cardHolder = new StackPane(card);
-        cardHolder.setAlignment(Pos.CENTER);
-        ScrollPane scroll = new ScrollPane(cardHolder);
-        scroll.setFitToWidth(true);
-        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scroll.getStyleClass().add("login-scroll");
-        setCenter(scroll);
-
         Label footer = new Label("SECURE ACCESS FOR LIBRARY STAFF");
         footer.getStyleClass().add("login-footer");
         Label builtBy = new Label("Build by");
@@ -76,9 +67,17 @@ public final class LoginView extends BorderPane {
         logo.setSmooth(true);
         VBox footerContent = new VBox(2, footer, builtBy, logo);
         footerContent.setAlignment(Pos.CENTER);
-        StackPane footerBox = new StackPane(footerContent);
-        footerBox.setPadding(new Insets(0, 0, 14, 0));
-        setBottom(footerBox);
+
+        VBox loginContent = new VBox(18, card, footerContent);
+        loginContent.setAlignment(Pos.BOTTOM_CENTER);
+        loginContent.setPadding(new Insets(10, 10, 14, 10));
+        ScrollPane scroll = new ScrollPane(loginContent);
+        scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scroll.getStyleClass().add("login-scroll");
+        setCenter(scroll);
 
         Button help = new Button("?");
         help.getStyleClass().add("login-help");

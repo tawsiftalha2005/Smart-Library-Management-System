@@ -37,5 +37,11 @@ public class Main extends Application {
         stage.getScene().setRoot(new LoginView(() -> sceneRoot(stage, new MainLayout(books, members, borrows,
                 () -> showLogin(stage, books, members, borrows)))));
     }
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) {
+        if (System.getProperty("os.name", "").toLowerCase(java.util.Locale.ROOT).contains("win")
+                && System.getProperty("glass.win.uiScale") == null) {
+            System.setProperty("glass.win.uiScale", "90%");
+        }
+        launch(args);
+    }
 }
