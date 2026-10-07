@@ -12,6 +12,8 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -29,6 +31,7 @@ public final class LoginView extends BorderPane {
     private StackPane mascotFigure;
     private StackPane mascotArea;
     private TranslateTransition idleBounce;
+    private Timeline blinkAnimation;
     private final TextField username = new TextField();
     private final PasswordField password = new PasswordField();
     private final TextField visiblePassword = new TextField();
@@ -64,8 +67,17 @@ public final class LoginView extends BorderPane {
 
         Label footer = new Label("SECURE ACCESS FOR LIBRARY STAFF");
         footer.getStyleClass().add("login-footer");
-        StackPane footerBox = new StackPane(footer);
-        footerBox.setPadding(new Insets(0, 0, 17, 0));
+        Label builtBy = new Label("Build by");
+        builtBy.getStyleClass().add("login-built-by");
+        ImageView logo = new ImageView(new Image(getClass().getResourceAsStream("/images/tawsif-logo.jpeg")));
+        logo.setFitWidth(84);
+        logo.setFitHeight(84);
+        logo.setPreserveRatio(true);
+        logo.setSmooth(true);
+        VBox footerContent = new VBox(2, footer, builtBy, logo);
+        footerContent.setAlignment(Pos.CENTER);
+        StackPane footerBox = new StackPane(footerContent);
+        footerBox.setPadding(new Insets(0, 0, 14, 0));
         setBottom(footerBox);
 
         Button help = new Button("?");
@@ -84,8 +96,12 @@ public final class LoginView extends BorderPane {
         content.setPadding(new Insets(20, 30, 18, 30));
         content.setAlignment(Pos.TOP_CENTER);
         mascotFigure = mascot();
-        HBox brand = new HBox(15, brandMark(), brandText());
+        VBox brandName = brandText();
+        brandName.setAlignment(Pos.CENTER);
+        HBox brand = new HBox(12, brandMark(), brandName);
         brand.setAlignment(Pos.CENTER);
+        brand.setMaxWidth(Double.MAX_VALUE);
+        brand.setTranslateX(-36);
         Label title = new Label("Welcome back"); title.getStyleClass().add("login-title");
         Label subtitle = new Label("Sign in to continue to your library workspace."); subtitle.getStyleClass().add("login-subtitle");
         VBox intro = new VBox(4, title, subtitle); intro.setAlignment(Pos.CENTER);
@@ -106,15 +122,12 @@ public final class LoginView extends BorderPane {
             else { password.setText(visiblePassword.getText()); visiblePassword.setVisible(false); visiblePassword.setManaged(false); password.setVisible(true); password.setManaged(true); eye.setTooltip(new Tooltip("Show password")); }
         });
         VBox passwordBox = new VBox(7, label("Password"), passwordRow);
-        CheckBox remember = new CheckBox("Remember me"); remember.setSelected(true); remember.getStyleClass().add("login-remember");
         submit.getStyleClass().add("login-submit"); submit.setMaxWidth(Double.MAX_VALUE); submit.setOnAction(e -> signIn());
-        Button forgot = new Button("Forgot password?"); forgot.getStyleClass().add("login-link");
-        forgot.setOnAction(e -> UiSupport.info("Password help", "Contact your library administrator to reset your password."));
 
         speech.getStyleClass().add("mascot-speech"); speech.setVisible(false); speech.setManaged(false);
         mascotArea = new StackPane(mascotFigure, speech); mascotArea.setMinHeight(132);
         StackPane.setAlignment(speech, Pos.TOP_CENTER); StackPane.setMargin(speech, new Insets(0,0,0,0));
-        content.getChildren().addAll(mascotArea, brand, intro, usernameBox, passwordBox, remember, submit, forgot);
+        content.getChildren().addAll(mascotArea, brand, intro, usernameBox, passwordBox, submit);
         card.getChildren().add(content);
         card.setPrefWidth(460);
         card.setMaxWidth(480);
@@ -124,7 +137,9 @@ public final class LoginView extends BorderPane {
         visiblePassword.textProperty().addListener((o,a,b)->resetError());
         idleBounce = new TranslateTransition(Duration.millis(1050), mascotFigure);
         idleBounce.setFromY(0); idleBounce.setToY(-5); idleBounce.setCycleCount(TranslateTransition.INDEFINITE); idleBounce.setAutoReverse(true);
-        mascotFigure.sceneProperty().addListener((o,oldScene,newScene)->{if(newScene==null)idleBounce.stop();else if(!busy)idleBounce.playFromStart();});
+        blinkAnimation = new Timeline(new KeyFrame(Duration.seconds(3), e -> drawMascotFrame(mascotError, mascotSuccess, true)), new KeyFrame(Duration.seconds(3.16), e -> drawMascotFrame(mascotError, mascotSuccess, false)));
+        blinkAnimation.setCycleCount(Timeline.INDEFINITE);
+        mascotFigure.sceneProperty().addListener((o,oldScene,newScene)->{if(newScene==null){idleBounce.stop();blinkAnimation.stop();}else if(!busy){idleBounce.playFromStart();blinkAnimation.playFromStart();}});
     }
 
     private VBox field(String name, TextField field) { field.getStyleClass().add("login-input"); return new VBox(7, label(name), field); }
@@ -139,7 +154,16 @@ public final class LoginView extends BorderPane {
         return holder;
     }
 
+    private boolean mascotError;
+    private boolean mascotSuccess;
+
     private void drawMascot(boolean error, boolean success) {
+        mascotError = error;
+        mascotSuccess = success;
+        drawMascotFrame(error, success, false);
+    }
+
+    private void drawMascotFrame(boolean error, boolean success, boolean blink) {
         GraphicsContext g = mascotCanvas.getGraphicsContext2D();
         g.setTransform(1, 0, 0, 1, 0, 0);
         g.clearRect(0, 0, mascotCanvas.getWidth(), mascotCanvas.getHeight());
@@ -155,8 +179,12 @@ public final class LoginView extends BorderPane {
         g.strokeLine(78,147,75,164); g.strokeLine(142,147,145,164);
         g.setFill(Color.color(0.18,0.16,0.58,0.10)); g.fillOval(70,158,80,13);
         g.setFill(shell); g.fillRoundRect(56,32,108,92,34,34); g.setFill(face); g.fillRoundRect(67,43,86,68,25,25);
-        g.setFill(darkPurple); g.fillOval(83,66,16,17); g.fillOval(121,66,16,17);
-        g.setFill(Color.WHITE); g.fillOval(87,68,5,5); g.fillOval(125,68,5,5);
+        if (blink) {
+            g.setStroke(darkPurple); g.setLineWidth(4); g.strokeLine(82,75,100,75); g.strokeLine(120,75,138,75);
+        } else {
+            g.setFill(darkPurple); g.fillOval(83,66,16,17); g.fillOval(121,66,16,17);
+            g.setFill(Color.WHITE); g.fillOval(87,68,5,5); g.fillOval(125,68,5,5);
+        }
         g.setStroke(darkPurple); g.setLineWidth(4);
         if (error) { g.strokeLine(82,62,99,67); g.strokeLine(123,67,140,62); g.strokeArc(98,85,24,16,25,130, javafx.scene.shape.ArcType.OPEN); g.setFill(Color.web("#f2a0b1")); g.fillOval(71,89,15,7); g.fillOval(134,89,15,7); }
         else g.strokeArc(98,78,24,16,205,130, javafx.scene.shape.ArcType.OPEN);
