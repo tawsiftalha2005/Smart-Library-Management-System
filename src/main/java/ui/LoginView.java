@@ -50,43 +50,38 @@ public final class LoginView extends BorderPane {
         theme.getStyleClass().add("login-theme-button");
         updateThemeText(theme);
         theme.setOnAction(e -> { dark = !dark; preferences.putBoolean("darkTheme", dark); applyTheme(); updateThemeText(theme); });
-        StackPane top = new StackPane(theme);
-        StackPane.setAlignment(theme, Pos.TOP_RIGHT);
-        top.setPadding(new Insets(26, 30, 0, 30));
-        setTop(top);
-
         buildCard();
         Label footer = new Label("SECURE ACCESS FOR LIBRARY STAFF");
         footer.getStyleClass().add("login-footer");
         Label builtBy = new Label("Build by");
         builtBy.getStyleClass().add("login-built-by");
         ImageView logo = new ImageView(new Image(getClass().getResourceAsStream("/images/tawsif-logo.jpeg")));
-        logo.setFitWidth(84);
-        logo.setFitHeight(84);
+        logo.setFitWidth(68);
+        logo.setFitHeight(68);
         logo.setPreserveRatio(true);
         logo.setSmooth(true);
         VBox footerContent = new VBox(2, footer, builtBy, logo);
         footerContent.setAlignment(Pos.CENTER);
 
         VBox loginContent = new VBox(18, card, footerContent);
-        loginContent.setAlignment(Pos.BOTTOM_CENTER);
+        loginContent.setAlignment(Pos.CENTER);
         loginContent.setPadding(new Insets(10, 10, 14, 10));
         ScrollPane scroll = new ScrollPane(loginContent);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.getStyleClass().add("login-scroll");
-        setCenter(scroll);
-
         Button help = new Button("?");
         help.getStyleClass().add("login-help");
         help.setTooltip(new Tooltip("Library staff sign-in"));
         help.setOnAction(e -> UiSupport.info("Sign-in help", "Enter your library staff username and password."));
-        StackPane overlay = new StackPane(help);
+        StackPane center = new StackPane(scroll, theme, help);
+        StackPane.setAlignment(theme, Pos.TOP_RIGHT);
+        StackPane.setMargin(theme, new Insets(26, 30, 0, 0));
         StackPane.setAlignment(help, Pos.BOTTOM_RIGHT);
-        overlay.setPadding(new Insets(0, 18, 12, 0));
-        setRight(overlay);
+        StackPane.setMargin(help, new Insets(0, 18, 12, 0));
+        setCenter(center);
     }
 
     private void buildCard() {
@@ -97,10 +92,9 @@ public final class LoginView extends BorderPane {
         mascotFigure = mascot();
         VBox brandName = brandText();
         brandName.setAlignment(Pos.CENTER);
-        HBox brand = new HBox(12, brandMark(), brandName);
+        HBox brand = new HBox(8, brandMark(), brandName);
         brand.setAlignment(Pos.CENTER);
         brand.setMaxWidth(Double.MAX_VALUE);
-        brand.setTranslateX(-36);
         Label title = new Label("Welcome back"); title.getStyleClass().add("login-title");
         Label subtitle = new Label("Sign in to continue to your library workspace."); subtitle.getStyleClass().add("login-subtitle");
         VBox intro = new VBox(4, title, subtitle); intro.setAlignment(Pos.CENTER);
@@ -124,7 +118,7 @@ public final class LoginView extends BorderPane {
         submit.getStyleClass().add("login-submit"); submit.setMaxWidth(Double.MAX_VALUE); submit.setOnAction(e -> signIn());
 
         speech.getStyleClass().add("mascot-speech"); speech.setVisible(false); speech.setManaged(false);
-        mascotArea = new StackPane(mascotFigure, speech); mascotArea.setMinHeight(132);
+        mascotArea = new StackPane(mascotFigure, speech); mascotArea.setMinHeight(112); mascotArea.setPrefHeight(112);
         StackPane.setAlignment(speech, Pos.TOP_CENTER); StackPane.setMargin(speech, new Insets(0,0,0,0));
         content.getChildren().addAll(mascotArea, brand, intro, usernameBox, passwordBox, submit);
         card.getChildren().add(content);
@@ -143,12 +137,12 @@ public final class LoginView extends BorderPane {
 
     private VBox field(String name, TextField field) { field.getStyleClass().add("login-input"); return new VBox(7, label(name), field); }
     private Label label(String text) { Label l = new Label(text); l.getStyleClass().add("login-label"); return l; }
-    private StackPane brandMark() { Label icon = new Label("▮▯"); icon.getStyleClass().add("login-brand-mark"); StackPane box = new StackPane(icon); box.setMinSize(60,60); box.setPrefSize(60,60); box.setMaxSize(60,60); return box; }
+    private StackPane brandMark() { Label icon = new Label("▮▯"); icon.getStyleClass().add("login-brand-mark"); StackPane box = new StackPane(icon); box.setMinSize(48,48); box.setPrefSize(48,48); box.setMaxSize(48,48); return box; }
     private VBox brandText() { Label name = new Label("Smart Library"); name.getStyleClass().add("login-brand-name"); Label sub = new Label("Management System"); sub.getStyleClass().add("login-brand-subtitle"); return new VBox(2,name,sub); }
 
     private StackPane mascot() {
-        mascotCanvas = new Canvas(180, 132);
-        StackPane holder = new StackPane(mascotCanvas); holder.setMinHeight(132); holder.setMaxHeight(132);
+        mascotCanvas = new Canvas(180, 112);
+        StackPane holder = new StackPane(mascotCanvas); holder.setMinHeight(112); holder.setPrefHeight(112); holder.setMaxHeight(112);
         drawMascot(false, false);
         return holder;
     }
@@ -166,7 +160,7 @@ public final class LoginView extends BorderPane {
         GraphicsContext g = mascotCanvas.getGraphicsContext2D();
         g.setTransform(1, 0, 0, 1, 0, 0);
         g.clearRect(0, 0, mascotCanvas.getWidth(), mascotCanvas.getHeight());
-        g.translate(5, 1); g.scale(0.74, 0.74);
+        g.translate(5, 1); g.scale(0.65, 0.65);
         Color purple = Color.web("#6861ed"), darkPurple = Color.web("#4945c8"), face = Color.web("#f5f5ff");
         javafx.scene.paint.LinearGradient shell = new javafx.scene.paint.LinearGradient(0,0,0,1,true,javafx.scene.paint.CycleMethod.NO_CYCLE,
                 new javafx.scene.paint.Stop(0,Color.web("#827bfa")),new javafx.scene.paint.Stop(1,Color.web("#5e57df")));
